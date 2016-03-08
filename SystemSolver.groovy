@@ -30,12 +30,13 @@ for (def i = 0; i < count; i++) {
     }
 }
 
+bigl:
 for (def n = 0; n < count; n++) {
     for (def n2 = n + 1; matrix.at(n, n) == 0; n2++) {
         try {
             matrix.swap(n, n2)
         } catch (all) {
-            throw new IllegalStateException('this matrix makes no sense')
+            continue bigl;
         }
     }
     matrix.unify(n, n)
@@ -47,7 +48,7 @@ for (def n = 0; n < count; n++) {
 
 println 'Solutions:'
 for (def i = 0; i < count; i++) {
-    System.out.print matrix.at(i, count)
+    System.out.print String.format('%+6.2f', matrix.at(i, count))
     if (i < count - 1)
         System.out.print ' '
     else
@@ -60,12 +61,12 @@ class Matrix {
     
     Matrix(size) {
         this.size = size
-        this.rows = new BigInteger[size][]
+        this.rows = new double[size][]
         for (def i = 0; i < size; i++)
-            this.rows[i] = new BigInteger[size + 1]
+            this.rows[i] = new double[size + 1]
     }
     
-    BigInteger at(row, col) {
+    double at(row, col) {
         return this.rows[(int)row][(int)col]
     }
     
@@ -74,22 +75,28 @@ class Matrix {
     }
     
     void multiply(row, mult) {
-        for (def i = 0; i < size + 1; i++)
-            this.rows[row][i] *= mult
-        this.print "Multiply R${row + 1} by ${mult}"
+        if (mult != 1) {
+            for (def i = 0; i < size + 1; i++)
+                this.rows[row][i] *= mult
+            this.print "Multiply R${row + 1} by ${mult}"
+        }
     }
     
     void swap(a, b) {
-        def rA = this.rows[a]
-        this.rows[a] = this.rows[b]
-        this.rows[b] = rA
-        this.print "Swap R${a + 1} and R${b + 1}"
+        if (a != b) {
+            def rA = this.rows[a]
+            this.rows[a] = this.rows[b]
+            this.rows[b] = rA
+            this.print "Swap R${a + 1} and R${b + 1}"
+        }
     }
     
     void add(a, b, mult) {
-        for (def i = 0; i < size + 1; i++)
-            this.rows[b][i] += this.rows[a][i] * mult
-        this.print "Add R${a + 1} * ${mult} to R${b + 1}"
+        if (mult != 0) {
+            for (def i = 0; i < size + 1; i++)
+                this.rows[b][i] += this.rows[a][i] * mult
+            this.print "Add R${a + 1} * ${mult} to R${b + 1}"
+        }
     }
     
     void unify(row, col) {
@@ -114,9 +121,9 @@ class Matrix {
                 if (j == this.rows[i].length - 1)
                     System.out.print '|'
                 else if (j == this.rows[i].length)
-                    System.out.print String.format('%+5.2f', this.rows[i][j - 1])
+                    System.out.print String.format('%+6.2f', this.rows[i][j - 1])
                 else
-                    System.out.print String.format('%+5.2f', this.rows[i][j])
+                    System.out.print String.format('%+6.2f', this.rows[i][j])
                 System.out.print ' '
             }
             if (i == 0)
