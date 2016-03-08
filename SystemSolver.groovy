@@ -60,12 +60,12 @@ class Matrix {
     
     Matrix(size) {
         this.size = size
-        this.rows = new double[size][]
+        this.rows = new BigInteger[size][]
         for (def i = 0; i < size; i++)
-            this.rows[i] = new double[size + 1]
+            this.rows[i] = new BigInteger[size + 1]
     }
     
-    int at(row, col) {
+    BigInteger at(row, col) {
         return this.rows[(int)row][(int)col]
     }
     
@@ -116,7 +116,7 @@ class Matrix {
                 else if (j == this.rows[i].length)
                     System.out.print String.format('%+5.2f', this.rows[i][j - 1])
                 else
-                    System.out.print this.rows[i][j]
+                    System.out.print String.format('%+5.2f', this.rows[i][j])
                 System.out.print ' '
             }
             if (i == 0)
