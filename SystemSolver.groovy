@@ -75,7 +75,7 @@ class Matrix {
     }
     
     void multiply(row, mult) {
-        if (mult != 1) {
+        if (Math.abs(1 - mult) > 0.0001) {
             for (def i = 0; i < size + 1; i++)
                 this.rows[row][i] *= mult
             this.print "Multiply R${row + 1} by ${mult}"
@@ -92,7 +92,7 @@ class Matrix {
     }
     
     void add(a, b, mult) {
-        if (mult != 0) {
+        if (Math.abs(mult) > 0.0001) {
             for (def i = 0; i < size + 1; i++)
                 this.rows[b][i] += this.rows[a][i] * mult
             this.print "Add R${a + 1} * ${mult} to R${b + 1}"
