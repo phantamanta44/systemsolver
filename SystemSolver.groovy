@@ -36,7 +36,7 @@ for (def n = 0; n < count; n++) {
         try {
             matrix.swap(n, n2)
         } catch (all) {
-            continue bigl;
+            continue bigl
         }
     }
     matrix.unify(n, n)
